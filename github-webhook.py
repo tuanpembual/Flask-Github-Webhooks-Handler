@@ -11,7 +11,7 @@ def github_payload():
       if request.headers.get('X-GitHub-Event') == "push":
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
-              cmd = subprocess.Popen(['bash','/sites/github-webhooks/git.bash'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+              cmd = subprocess.Popen(['bash','git_commands.bash'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
               out,error = cmd.communicate()                 
               return jsonify({'msg': 'successfully ran git pull'})
 
