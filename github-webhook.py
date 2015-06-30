@@ -19,8 +19,9 @@ def verify_hmac_hash(data, key)
 @app.route("/payload")
 def github_payload():      
       if request.headers.get('X-GitHub-Event') == "ping":
-        Sig = request.headers.get('X-GitHub-Event'
-        print(request.get_json())
+        signature = request.headers.get('X-GitHub-Event')
+        print(signature)
+        #print(request.get_json())
         return jsonify({'msg': 'Ok'})
       if request.headers.get('X-GitHub-Event') == "push":
           payload = request.get_json()
@@ -30,4 +31,4 @@ def github_payload():
               return jsonify({'msg': 'successfully ran git pull'})
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="23.250.18.72")
