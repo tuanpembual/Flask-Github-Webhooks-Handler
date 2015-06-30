@@ -19,7 +19,7 @@ def verify_hmac_hash(data, key)
 @app.route("/payload")
 def github_payload():      
       if request.headers.get('X-GitHub-Event') == "ping":
-        signature = request.headers.get('X-GitHub-Event')
+        signature = request.headers.get('X-Hub-Signature')
         print(signature)
         #print(request.get_json())
         return jsonify({'msg': 'Ok'})
