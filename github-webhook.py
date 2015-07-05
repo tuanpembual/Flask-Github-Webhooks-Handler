@@ -35,4 +35,5 @@ def github_payload():
               return jsonify({'msg': 'successfully ran git pull'})
 
 if __name__ == "__main__":
+    app.debug = True
     app.run(host="23.250.18.72")
