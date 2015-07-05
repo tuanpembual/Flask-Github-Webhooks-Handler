@@ -8,10 +8,13 @@ import subprocess
 app = Flask(__name__)
 
 
-def verify_hmac_hash(data, signature):
-    digest_maker = hmac.new(bytes('some secret', 'UTF-8'), data, hashlib.sha1)
-    digest = digest_maker.hexdigest()
-    print("sha1=" + digest)
+def verify_hmac_hash(data_dict, signature):
+    digest_maker = hmac.new(bytes('some secret', 'UTF-8'),hashlib.sha1)
+    for kv in data_dict:
+        digest_maker.update(kv.encode('utf-8'))
+    digest = "sha1=" + digest_maker.hexdigest()
+    print ("digest:", digest)
+    print ("signature:", signature)
     return hmac.compare_digest(digest, signature)
 
 
@@ -25,8 +28,8 @@ def github_payload():
         return jsonify({'msg': 'Ok'})
       if request.headers.get('X-GitHub-Event') == "push":
           signature = request.headers.get('X-Hub-Signature')
-          data = 'request'
-          verify_result = verify_hmac_hash(data.encode('utf-8'), signature)
+          data = request.get_json()
+          verify_result = verify_hmac_hash(data, signature)
           print(verify_result)
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
