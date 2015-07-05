@@ -24,12 +24,16 @@ def github_payload():
       if request.headers.get('X-GitHub-Event') == "push":
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
-              cmd = subprocess.Popen(['git'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-              out,error = cmd.communicate()
-              return jsonify({'msg': 'successfully ran git pull'})
+              try:
+                  subprocess.check_output(['git', 'pull', 'origin', 'master' ]
+                  return jsonify({'msg': 'successfully ran git pull'})
+              except subprocess.CalledProcessError:
+                  error = subprocess.CalledProcessError.output
+                  return jsonify({'msg': error})
+
     else:
         return jsonify({'msg': 'invalid hash'})
-        
+
 
 if __name__ == "__main__":
     app.debug = True
