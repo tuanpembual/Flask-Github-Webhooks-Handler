@@ -25,11 +25,10 @@ def github_payload():
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
               try:
-                  subprocess.check_output(['git', 'pull', 'origin', 'master' ])
-                  return jsonify({'msg': 'successfully ran git pull'})
-              except subprocess.CalledProcessError:
-                  error = subprocess.CalledProcessError.output
-                  return jsonify({'msg': error})
+                  cmd_output=subprocess.check_output(['git', 'pull', 'origin', 'master' ],)
+                  return jsonify({'msg': str(cmd_output)})
+              except subprocess.CalledProcessError as error: 
+                  return jsonify({'msg': str(error.output)})                  
 
     else:
         return jsonify({'msg': 'invalid hash'})
