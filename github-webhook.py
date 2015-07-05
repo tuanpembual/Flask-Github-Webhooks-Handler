@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 def verify_hmac_hash(data, signature):
-    digest_maker = hmac.new(bytes('some secret', 'utf-8'), data, hashlib.sha1)
+    digest_maker = hmac.new(bytes('some secret', 'UTF-8'), data, hashlib.sha1)
     digest = digest_maker.hexdigest()
     print(digest)
     return hmac.compare_digest(digest, signature)
