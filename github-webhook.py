@@ -25,7 +25,7 @@ def github_payload():
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
               try:
-                  subprocess.check_output(['git', 'pull', 'origin', 'master' ]
+                  subprocess.check_output(['git', 'pull', 'origin', 'master' ])
                   return jsonify({'msg': 'successfully ran git pull'})
               except subprocess.CalledProcessError:
                   error = subprocess.CalledProcessError.output
