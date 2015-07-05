@@ -8,7 +8,7 @@ import subprocess
 app = Flask(__name__)
 
 
-def verify_hmac_hash(data, key)
+def verify_hmac_hash(data, key):
     digest_maker = hmac.new('some secret', data, hashlib.sha1)
     digest = digest_maker.digest()
 
@@ -16,7 +16,7 @@ def verify_hmac_hash(data, key)
 
 
 
-@app.route("/payload")
+@app.route("/payload", methods=['POST'])
 def github_payload():
       if request.headers.get('X-GitHub-Event') == "ping":
         signature = request.headers.get('X-Hub-Signature')
