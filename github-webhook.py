@@ -16,21 +16,20 @@ def verify_hmac_hash(data, signature):
 
 @app.route("/payload", methods=['POST'])
 def github_payload():
+    signature = request.headers.get('X-Hub-Signature')
+    data = request.data
+    if verify_hmac_hash(data, signature):
       if request.headers.get('X-GitHub-Event') == "ping":
-        signature = request.headers.get('X-Hub-Signature')
-        print(signature)
-        #print(request.get_json())
         return jsonify({'msg': 'Ok'})
       if request.headers.get('X-GitHub-Event') == "push":
-          signature = request.headers.get('X-Hub-Signature')
-          data = request.data
-          verify_result = verify_hmac_hash(data, signature)
-          print(verify_result)
           payload = request.get_json()
           if  payload['commits'][0]['distinct'] == True:
               cmd = subprocess.Popen(['bash','git_commands.bash'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
               out,error = cmd.communicate()
               return jsonify({'msg': 'successfully ran git pull'})
+    else:
+        return jsonify({'msg': 'invalid hash'})
+        
 
 if __name__ == "__main__":
     app.debug = True
