@@ -4,12 +4,13 @@ import hmac
 import hashlib
 # http://techarena51.com/index.php/how-to-install-python-3-and-flask-on-linux/
 import subprocess
+import os
 
 app = Flask(__name__)
 
 
 def verify_hmac_hash(data, signature):
-    github_secret = bytes('some secret', 'UTF-8')
+    github_secret = bytes(os.environ['GITHUB_SECRET'], 'UTF-8')
     mac = hmac.new(github_secret, msg=data, digestmod=hashlib.sha1)
     return hmac.compare_digest('sha1=' + mac.hexdigest(), signature)
 
