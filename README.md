@@ -1,4 +1,4 @@
-Flask Python Github webhook handlers
+Flask Python Github webhook handler
 
 This software is compatable with python 3.4 and Flask 0.10.
 
