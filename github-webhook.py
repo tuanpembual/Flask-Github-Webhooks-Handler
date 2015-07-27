@@ -7,17 +7,13 @@ import subprocess
 import os
 
 # https://pythonhosted.org/Flask-Mail/
-from flask_mail import Mail,  Message
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+app.config['MAIL_DEFAULT_SENDER'] = "youremail@yourdomain.net"
 mail = Mail(app)
 
-# Email defaults
-app.config.update(
-    MAIL_DEFAULT_SENDER = "youremail@yourdomain.net"
-)
-
-def mail (subject, body):
+def email (subject, body):
     msg = Message(subject, recipients=["from@you.com"])
     msg.body = body
     mail.send(msg)
@@ -43,10 +39,11 @@ def github_payload():
                 try:
                     cmd_output = subprocess.check_output(
                         ['git', 'pull', 'origin', 'master'],)
-                    mail("Code deployed successfully", cmd_output)
+                    subject"Code deployed successfully"
+                    email(, cmd_output)
                     return jsonify({'msg': str(cmd_output)})
                 except subprocess.CalledProcessError as error:
-                    mail("Code deployment failed", cmd_output)
+                    email("Code deployment failed", cmd_output)
                     return jsonify({'msg': str(error.output)})
 
     else:
