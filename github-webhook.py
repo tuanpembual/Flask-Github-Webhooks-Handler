@@ -43,8 +43,10 @@ def github_payload():
                     email(, cmd_output)
                     return jsonify({'msg': str(cmd_output)})
                 except subprocess.CalledProcessError as error:
-                    email("Code deployment failed", cmd_output)
+                    email("Code deployment failed", error.output)
                     return jsonify({'msg': str(error.output)})
+            else:
+                return jsonify({'msg': 'nothing to commit'})
 
     else:
         return jsonify({'msg': 'invalid hash'})
